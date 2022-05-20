@@ -1,7 +1,9 @@
 
 
+import 'package:invests_helper/secure_data.dart';
+
 class BaseTelegramRepository {
 
-  static const String token = '5213090712:AAFGStqXUyGkWEkqCpDSKDZQHDu1a5PvsdE';
+  static const String token = IHSecureData.token;
 
 }
