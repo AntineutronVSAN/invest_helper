@@ -13,21 +13,27 @@ class FiatActivesState extends BaseState<FiatActivesState> {
   /// Статистическая информация
   final FiatActiveInformation info;
 
+  /// Доступные для выбора валюты
+  final List<String> fiatCurrencies;
+
   FiatActivesState({
     required this.buysStatusesMap,
     required this.buys,
     required this.info,
+    required this.fiatCurrencies,
   });
 
   FiatActivesState copyWith({
     Map<int, BuysCashStatus>? buysStatusesMap,
     List<BuysCash>? buys,
     FiatActiveInformation? info,
+    List<String>? fiatCurrencies,
   }) {
     return FiatActivesState(
       buysStatusesMap: buysStatusesMap ?? this.buysStatusesMap,
       buys: buys ?? this.buys,
       info: info ?? this.info,
+      fiatCurrencies: fiatCurrencies ?? this.fiatCurrencies,
     );
   }
 
@@ -36,6 +42,7 @@ class FiatActivesState extends BaseState<FiatActivesState> {
         buysStatusesMap: {},
         buys: [],
         info: FiatActiveInformation.empty(),
+        fiatCurrencies: ["usd", "eur", "rub"],
     );
   }
 

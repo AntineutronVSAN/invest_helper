@@ -1,6 +1,7 @@
 
 
 import 'package:invests_helper/data/app_data_service.dart';
+import 'package:invests_helper/data/models/response/google_sheets/all_lists_data.dart';
 import 'package:invests_helper/data/models/response/google_sheets/buys_cash.dart';
 import 'package:invests_helper/data/models/response/google_sheets/buys_cash_status.dart';
 import 'package:invests_helper/data/models/response/google_sheets/google_sheet_order.dart';
@@ -32,4 +33,7 @@ abstract class BaseGoogleSheetDataService implements AppDataService {
 
   /// Создать новую покупку фиатной валюты
   Future<void> createNewFiatBuy({required BuysCash buy});
+
+  /// Получить все категориальные данные
+  Future<AllListsGoogleSheetData> getAllCategoryListData({required bool isRefresh});
 }

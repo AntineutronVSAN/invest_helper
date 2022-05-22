@@ -1,4 +1,5 @@
 
+import 'package:invests_helper/data/models/response/google_sheets/all_lists_data.dart';
 import 'package:invests_helper/data/models/response/google_sheets/buys_cash.dart';
 import 'package:invests_helper/data/models/response/google_sheets/buys_cash_status.dart';
 import 'package:invests_helper/data/models/response/google_sheets/google_sheet_order.dart';
@@ -46,6 +47,12 @@ class TestGoogleSheetRepository extends BaseBackendClient implements BaseGoogleS
   @override
   Future<void> createNewFiatBuy({required BuysCash buy}) {
     // TODO: implement createNewFiatBuy
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AllListsGoogleSheetData> getAllCategoryListData() {
+    // TODO: implement getAllCategoryListData
     throw UnimplementedError();
   }
 

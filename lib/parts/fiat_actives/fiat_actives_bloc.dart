@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invests_helper/base/bloc_event_base.dart';
 import 'package:invests_helper/base/bloc_state_base.dart';
 import 'package:invests_helper/base/invest_helper/invest_helper_bloc.dart';
+import 'package:invests_helper/data/models/response/google_sheets/all_lists_data.dart';
 import 'package:invests_helper/data/models/response/google_sheets/buys_cash.dart';
 import 'package:invests_helper/data/models/response/google_sheets/buys_cash_status.dart';
 import 'package:invests_helper/data/services/google_sheet/google_sheet_service_base.dart';
@@ -43,6 +44,7 @@ class FiatActivesBloc extends InvestHelperBloc<FiatActivesEvent, GlobalState<Fia
         buysStatusesMap: Map.fromIterables(
             entities.buysCashStatus.map((e) => e.id), entities.buysCashStatus),
         info: entities.fiatActiveInformation,
+        fiatCurrencies: entities.categories.fiatActivesPairs.map((e) => e.pair).toList(),
       ).toContent());
 
     } catch(e) {
@@ -64,6 +66,7 @@ class FiatActivesBloc extends InvestHelperBloc<FiatActivesEvent, GlobalState<Fia
         buysStatusesMap: Map.fromIterables(
             entities.buysCashStatus.map((e) => e.id), entities.buysCashStatus),
         info: entities.fiatActiveInformation,
+        fiatCurrencies: entities.categories.fiatActivesPairs.map((e) => e.pair).toList(),
       ).toContent());
 
     } catch(e) {
@@ -115,11 +118,14 @@ class FiatActivesBloc extends InvestHelperBloc<FiatActivesEvent, GlobalState<Fia
         isRefresh: isRefresh);
     final buys = await googleSheetDataService.getBuysCash(
         isRefresh: isRefresh);
+    final categories = await googleSheetDataService.getAllCategoryListData(
+        isRefresh: isRefresh);
     final info = _getInformation(buys: buys);
     return FiatActivesEntities(
-        buys: buys,
-        buysCashStatus: statuses,
-        fiatActiveInformation: info
+      buys: buys,
+      buysCashStatus: statuses,
+      fiatActiveInformation: info,
+      categories: categories,
     );
   }
 
@@ -129,10 +135,13 @@ class FiatActivesEntities {
   final List<BuysCash> buys;
   final List<BuysCashStatus> buysCashStatus;
   final FiatActiveInformation fiatActiveInformation;
+  final AllListsGoogleSheetData categories;
+
   FiatActivesEntities({
     required this.buys,
     required this.buysCashStatus,
     required this.fiatActiveInformation,
+    required this.categories,
   });
 }
 

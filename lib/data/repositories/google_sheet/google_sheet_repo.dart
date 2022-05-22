@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:invests_helper/data/models/response/google_sheets/all_lists_data.dart';
 import 'package:invests_helper/data/models/response/google_sheets/buys_cash.dart';
 import 'package:invests_helper/data/models/response/google_sheets/buys_cash_status.dart';
 import 'package:invests_helper/data/models/response/google_sheets/google_sheet_order.dart';
@@ -24,6 +25,7 @@ class GoogleSheetRepository extends BaseBackendClient implements BaseGoogleSheet
   static const String getOrdersCode = '1';
   static const String getBuysCashStatusesCode = '2';
   static const String getBuysCashCode = '3';
+  static const String getCategoriesList = 'getAllListsDataRoute';
   // [GET] END
 
   // [POST] START
@@ -153,6 +155,21 @@ class GoogleSheetRepository extends BaseBackendClient implements BaseGoogleSheet
         accessTokenKey: accessToken,
       },
     );
+  }
+
+  @override
+  Future<AllListsGoogleSheetData> getAllCategoryListData() async {
+    final result = await makeGetResponse(
+        startScriptUrlProd, type: CryptoMarketType.googleSheets,
+        queryParam: {
+          'type': getCategoriesList,
+          accessTokenKey: accessToken,
+        }
+    );
+
+    final json = result['result'] as Map<String, dynamic>;
+    final data = AllListsGoogleSheetData.fromJson(json);
+    return data;
   }
 }
 

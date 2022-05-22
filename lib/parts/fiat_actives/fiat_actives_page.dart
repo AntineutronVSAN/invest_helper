@@ -57,8 +57,7 @@ class FiatActivePage extends InvestHelperStatelessWidget<FiatActivesBloc,
                 final res = await Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) {
                   return TabNavigator.getCreateBuyPage(
-                    // TODO Из таблиц
-                    assets: ['usdrub', 'eurrub', 'tryrub'],
+                    assets: newState.fiatCurrencies,
                     whereKeep: ['Тинькофф', 'Матрас'],
                     fiatActivesBloc: bloc,
                   );

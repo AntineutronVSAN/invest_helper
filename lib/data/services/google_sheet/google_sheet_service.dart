@@ -1,5 +1,6 @@
 
 
+import 'package:invests_helper/data/models/response/google_sheets/all_lists_data.dart';
 import 'package:invests_helper/data/models/response/google_sheets/buys_cash.dart';
 import 'package:invests_helper/data/models/response/google_sheets/buys_cash_status.dart';
 import 'package:invests_helper/data/models/response/google_sheets/google_sheet_order.dart';
@@ -16,6 +17,7 @@ class GoogleSheetDataService implements BaseGoogleSheetDataService {
   int? getOrdersCountCache;
   List<BuysCashStatus>? buysCashStatusesCache;
   List<BuysCash>? buysCashCache;
+  AllListsGoogleSheetData? allListsGoogleSheetDataCache;
 
   @override
   BaseGoogleSheetRepository getRepository() {
@@ -75,5 +77,15 @@ class GoogleSheetDataService implements BaseGoogleSheetDataService {
   @override
   Future<void> createNewFiatBuy({required BuysCash buy}) async {
     await googleSheetRepository.createNewFiatBuy(buy: buy);
+  }
+
+  @override
+  Future<AllListsGoogleSheetData> getAllCategoryListData({required bool isRefresh}) async {
+    if (isRefresh || allListsGoogleSheetDataCache == null) {
+      final data = await googleSheetRepository.getAllCategoryListData();
+      allListsGoogleSheetDataCache = data;
+      return data;
+    }
+    return allListsGoogleSheetDataCache!;
   }
 }
