@@ -5,8 +5,10 @@ import 'package:invests_helper/parts/diet/diet_journal/components/diet_list_item
 import 'package:invests_helper/parts/diet/diet_journal/diet_journal_bloc.dart';
 import 'package:invests_helper/parts/diet/diet_journal/diet_journal_event.dart';
 import 'package:invests_helper/parts/diet/diet_journal/diet_journal_state.dart';
+import 'package:invests_helper/parts/tab_navigator.dart';
 import 'package:invests_helper/theme/ui_colors.dart';
 import 'package:invests_helper/ui_package/app_bar/app_bar.dart';
+import 'package:invests_helper/ui_package/app_button/app_button.dart';
 import 'package:invests_helper/ui_package/app_calendar/app_calendar.dart';
 import 'package:invests_helper/ui_package/refresh_indicator/refresh_indicator.dart';
 import 'package:invests_helper/utils/time_service.dart';
@@ -39,19 +41,52 @@ class DietJournalPage extends InvestHelperStatelessWidget<DietJournalBloc,
             bloc.refreshEvent();
             await bloc.stream.first;
           },
-          child: SingleChildScrollView(
+          child: CustomScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Column(
-                children: [
-                  _getCalendar(state: newState, context: context),
-                ],
+            slivers: [
+              // Add the app bar to the CustomScrollView.
+              SliverAppBar(
+                title: _getSliverAppBarTitleWidget(state: newState, context: context),
+                floating: true,
+                //flexibleSpace: Placeholder(),
+                expandedHeight: 100,
+
               ),
-            ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    children: [
+                      _getCalendar(state: newState, context: context),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _getSliverAppBarTitleWidget({
+    required BuildContext context,
+    required DietJournalState state,
+}) {
+    return Column(
+      children: [
+        IHButton(
+          text: 'Новая запись',
+          onPressed: () async {
+            final result = await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return TabNavigator.getCreateDietJournalEntryPage(
+                  users: state.users.values.toList(),
+                  products: state.products.values.toList(),
+              );
+            }));
+          },
+        )
+      ],
     );
   }
 

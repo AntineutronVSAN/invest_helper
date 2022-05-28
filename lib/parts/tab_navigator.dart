@@ -16,6 +16,7 @@ import 'package:invests_helper/main.dart';
 import 'package:invests_helper/parts/actives/actives_bloc.dart';
 import 'package:invests_helper/parts/actives/actives_screen.dart';
 import 'package:invests_helper/parts/crypto_main/crypto_main_page.dart';
+import 'package:invests_helper/parts/diet/diet_journal/create_diet_entry/create_diet_entry_page.dart';
 import 'package:invests_helper/parts/diet/diet_journal/diet_journal_bloc.dart';
 import 'package:invests_helper/parts/diet/diet_journal/diet_journal_page.dart';
 import 'package:invests_helper/parts/diet/diet_main_page/diet_main_bloc.dart';
@@ -187,6 +188,14 @@ class TabNavigator {
       weightJournalBloc: weightJournalBloc,
       formKey: key,
     );
+    return page;
+  }
+
+  static Widget getCreateDietJournalEntryPage({
+    required List<DietUserModel> users,
+    required List<DietProductModel> products,
+  }) {
+    final page = CreateDietEntryPage(users: users, products: products);
     return page;
   }
 }
