@@ -48,6 +48,7 @@ class FiatActivePage extends InvestHelperStatelessWidget<FiatActivesBloc,
             ),
           ),
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [

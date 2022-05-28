@@ -10,24 +10,8 @@ class BaseRefreshEvent extends GlobalEvent {
 }
 
 class BaseInitialEvent extends GlobalEvent {
-
+  final bool isRefresh;
+  BaseInitialEvent({this.isRefresh = true});
 }
-
-/*abstract class GlobalEvent<LE> {
-  LE toLocalEvent() => this as LE;
-
-}
-
-abstract class BaseBlocEvent<T> {
-  GlobalEvent<T> toGlobalEvent() => this as GlobalEvent<T>;
-}
-
-class GlobalInitialEvent<LE> extends GlobalEvent<LE> {
-
-}
-class GlobalRefreshEvent<LE> extends GlobalEvent<LE> {
-
-}*/
-
 
 

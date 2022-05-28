@@ -2,6 +2,7 @@
 import 'package:invests_helper/data/models/response/google_sheets/all_lists_data.dart';
 import 'package:invests_helper/data/models/response/google_sheets/buys_cash.dart';
 import 'package:invests_helper/data/models/response/google_sheets/buys_cash_status.dart';
+import 'package:invests_helper/data/models/response/google_sheets/diet.dart';
 import 'package:invests_helper/data/models/response/google_sheets/google_sheet_order.dart';
 import 'package:invests_helper/data/repositories/google_sheet/base_google_sheet_repo.dart';
 import 'package:invests_helper/data/repositories/repository_base.dart';
@@ -53,6 +54,18 @@ class TestGoogleSheetRepository extends BaseBackendClient implements BaseGoogleS
   @override
   Future<AllListsGoogleSheetData> getAllCategoryListData() {
     // TODO: implement getAllCategoryListData
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DietAllDataModel> getAllDietData() {
+    // TODO: implement getAllDietData
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> addWeightJournalEntry({required DietWeightJournalModel entry}) {
+    // TODO: implement addWeightJournalEntry
     throw UnimplementedError();
   }
 

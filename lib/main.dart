@@ -36,13 +36,12 @@ class _HomePageState extends State<HomePage> {
 
   int _selectedIndex = 0;
 
-  static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static final List<Widget> _widgetOptions = <Widget>[
 
     TabNavigator.getHomePage(),
     TabNavigator.getCryptoMainPage(),
     TabNavigator.getFiatPage(),
+    TabNavigator.getDietMainPage(),
   ];
 
   @override
@@ -53,11 +52,13 @@ class _HomePageState extends State<HomePage> {
           _widgetOptions[0],
           _widgetOptions[1],
           _widgetOptions[2],
+          _widgetOptions[3],
         ],
         index: _selectedIndex,
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: AppColors.secondColor,
+        type: BottomNavigationBarType.fixed,
         items: [
           const BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -78,7 +79,17 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.monetization_on_outlined),
             label: 'Валюта',
             backgroundColor: AppColors.primaryColor,
-          )
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              'assets/icons/ic_diet.svg',
+              width: 25,
+              height: 25,
+              color: AppColors.primaryColor,
+            ),
+            label: 'Диета',
+            backgroundColor: AppColors.primaryColor,
+          ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: AppColors.secondTextColor,

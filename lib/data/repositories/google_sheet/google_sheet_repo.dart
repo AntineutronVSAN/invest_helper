@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:invests_helper/data/models/response/google_sheets/all_lists_data.dart';
 import 'package:invests_helper/data/models/response/google_sheets/buys_cash.dart';
 import 'package:invests_helper/data/models/response/google_sheets/buys_cash_status.dart';
+import 'package:invests_helper/data/models/response/google_sheets/diet.dart';
 import 'package:invests_helper/data/models/response/google_sheets/google_sheet_order.dart';
 import 'package:invests_helper/data/repositories/google_sheet/base_google_sheet_repo.dart';
 import 'package:invests_helper/data/repositories/repository_base.dart';
@@ -26,13 +27,15 @@ class GoogleSheetRepository extends BaseBackendClient implements BaseGoogleSheet
   static const String getBuysCashStatusesCode = '2';
   static const String getBuysCashCode = '3';
   static const String getCategoriesList = 'getAllListsDataRoute';
+  static const String getDietAllData = 'allDietDataRoute';
   // [GET] END
 
   // [POST] START
   static const String setNewOrderCode = '0';
   static const String setNewMeanedOrderCode = '1';
 
-  static const String createNewFiatBuyCode = 'createBuysCashCode';
+  static const String createNewFiatBuyRoute = 'createBuysCashCode';
+  static const String createNewWeightJournalEntryRoute = 'dietWeightJournalAddRoute';
   // [POST] END
   @override
   Future<int> getOrdersCount() async {
@@ -142,7 +145,7 @@ class GoogleSheetRepository extends BaseBackendClient implements BaseGoogleSheet
   @override
   Future<void> createNewFiatBuy({required BuysCash buy}) async {
     final requestBody = {
-      'type': createNewFiatBuyCode,
+      'type': createNewFiatBuyRoute,
       'data': {
         'buy': buy.toJson(),
       },
@@ -166,10 +169,41 @@ class GoogleSheetRepository extends BaseBackendClient implements BaseGoogleSheet
           accessTokenKey: accessToken,
         }
     );
-
     final json = result['result'] as Map<String, dynamic>;
     final data = AllListsGoogleSheetData.fromJson(json);
     return data;
+  }
+
+  @override
+  Future<DietAllDataModel> getAllDietData() async {
+    final result = await makeGetResponse(
+        startScriptUrlProd, type: CryptoMarketType.googleSheets,
+        queryParam: {
+          'type': getDietAllData,
+          accessTokenKey: accessToken,
+        }
+    );
+    final json = result['result'] as Map<String, dynamic>;
+    final data = DietAllDataModel.fromJson(json);
+    return data;
+  }
+
+  @override
+  Future<void> addWeightJournalEntry({required DietWeightJournalModel entry}) async {
+    final requestBody = {
+      'type': createNewWeightJournalEntryRoute,
+      'data': {
+        'dietWeightJournalAddDataKey': entry.toJson(),
+      },
+    };
+
+    final result = await makePostResponse(
+      startScriptUrlProd, type: CryptoMarketType.googleSheets,
+      body: requestBody,
+      queryParameters: {
+        accessTokenKey: accessToken,
+      },
+    );
   }
 }
 

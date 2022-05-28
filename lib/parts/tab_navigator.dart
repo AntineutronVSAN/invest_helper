@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:invests_helper/base/bloc_state_base.dart';
 import 'package:invests_helper/const.dart';
+import 'package:invests_helper/data/models/response/google_sheets/diet.dart';
 import 'package:invests_helper/data/models/response/google_sheets/google_sheet_order.dart';
 import 'package:invests_helper/data/repositories/binance/base_binance_repository.dart';
 import 'package:invests_helper/data/repositories/binance/binance_repository.dart';
@@ -14,6 +16,13 @@ import 'package:invests_helper/main.dart';
 import 'package:invests_helper/parts/actives/actives_bloc.dart';
 import 'package:invests_helper/parts/actives/actives_screen.dart';
 import 'package:invests_helper/parts/crypto_main/crypto_main_page.dart';
+import 'package:invests_helper/parts/diet/diet_journal/diet_journal_bloc.dart';
+import 'package:invests_helper/parts/diet/diet_journal/diet_journal_page.dart';
+import 'package:invests_helper/parts/diet/diet_main_page/diet_main_bloc.dart';
+import 'package:invests_helper/parts/diet/diet_main_page/diet_main_page.dart';
+import 'package:invests_helper/parts/diet/weight_journal/create_weight_entry_page/create_weight_entry_page.dart';
+import 'package:invests_helper/parts/diet/weight_journal/weight_journal_bloc.dart';
+import 'package:invests_helper/parts/diet/weight_journal/weight_journal_page.dart';
 import 'package:invests_helper/parts/fiat_actives/create_fiat_buy/create_fiat_buy.dart';
 import 'package:invests_helper/parts/fiat_actives/fiat_actives_bloc.dart';
 import 'package:invests_helper/parts/fiat_actives/fiat_actives_page.dart';
@@ -147,4 +156,37 @@ class TabNavigator {
     );
   }
 
+  static Widget getDietMainPage() {
+    final bloc = DietMainBloc(baseGoogleSheetDataService: googleSheetDataService);
+    bloc.initEvent();
+    final page = DietMainPage(bloc: bloc);
+    return page;
+  }
+
+  static Widget getDietJournalPage() {
+    final bloc = DietJournalBloc(baseGoogleSheetDataService: googleSheetDataService);
+    bloc.initEvent();
+    final page = DietJournalPage(bloc: bloc);
+    return page;
+  }
+
+  static Widget getWeightJournalPage() {
+    final bloc = WeightJournalBloc(baseGoogleSheetDataService: googleSheetDataService);
+    bloc.initEvent();
+    final page = WeightJournalPage(bloc: bloc);
+    return page;
+  }
+
+  static Widget getCreateWeightEntryPage({
+    required List<DietUserModel> users,
+    required WeightJournalBloc weightJournalBloc
+  }) {
+    final key = GlobalKey<FormBuilderState>();
+    final page = CreateWeightEntryPage(
+      users: users,
+      weightJournalBloc: weightJournalBloc,
+      formKey: key,
+    );
+    return page;
+  }
 }

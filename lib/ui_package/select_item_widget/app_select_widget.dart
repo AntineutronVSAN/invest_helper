@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:invests_helper/theme/texts.dart';
 import 'package:invests_helper/theme/ui_colors.dart';
+import 'package:invests_helper/ui_package/app_button/app_button.dart';
 
 class IHSelectObjectWidget<T> extends StatelessWidget {
   final List<T> options;
@@ -22,9 +23,9 @@ class IHSelectObjectWidget<T> extends StatelessWidget {
     if (options.isEmpty) return const SizedBox.shrink();
 
     return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: GestureDetector(
-        onTap: () async {
+      padding: const EdgeInsets.all(0.0),
+      child: TextButton(
+        onPressed: () async {
           await showDialog(
               context: context,
               barrierDismissible: true,
@@ -78,8 +79,8 @@ class IHSelectObjectWidget<T> extends StatelessWidget {
     required int selectedIndex,
     required BuildContext context,
   }) {
-    return GestureDetector(
-      onTap: () {
+    return TextButton(
+      onPressed: () {
         onOptionSelected?.call(currentIndex);
         Navigator.of(context).pop();
       },
@@ -88,19 +89,14 @@ class IHSelectObjectWidget<T> extends StatelessWidget {
         child: Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  flex: 5,
-                  child: AppTexts.subtitleText(
-                        text: options[currentIndex].toString())),
+                AppTexts.subtitleText(
+                      text: options[currentIndex].toString()),
                 if (selectedIndex == currentIndex)
-                  const Expanded(
-                    flex: 1,
-                    child: Icon(
-                      Icons.arrow_forward_ios,
-                      color: AppColors.primaryTextColor,
-                    ),
+                  const Icon(
+                    Icons.arrow_forward_ios,
+                    color: AppColors.primaryTextColor,
                   ),
               ],
             ),

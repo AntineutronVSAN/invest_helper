@@ -4,6 +4,46 @@ import 'package:invests_helper/theme/ui_colors.dart';
 
 class AppTexts {
 
+  static Widget primaryIconText({
+    required String text,
+    double? fontSize = 20.0,
+    Color color = AppColors.primaryInfoTextColor,
+    EdgeInsets? padding,
+    FontWeight? fontWeight,
+  }) {
+    return Padding(
+      padding: padding ?? EdgeInsets.zero,
+      child: Text(
+        text,
+        style: TextStyle(
+          color: color,
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+        ),
+      ),
+    );
+  }
+
+  static Widget primaryCardText({
+    required String text,
+    double? fontSize = 16.0,
+    Color color = AppColors.primaryInfoTextColor,
+    EdgeInsets? padding,
+    FontWeight? fontWeight,
+  }) {
+    return Padding(
+      padding: padding ?? EdgeInsets.zero,
+      child: Text(
+        text,
+        style: TextStyle(
+          color: color,
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+        ),
+      ),
+    );
+  }
+
   static Widget secondTitleText({
     required String text,
     double? fontSize = 16.0,
@@ -32,7 +72,7 @@ class AppTexts {
     FontWeight? fontWeight,
   }) {
     return Padding(
-      padding: padding ?? EdgeInsets.zero,
+      padding: padding ?? const EdgeInsets.all(8.0),
       child: Text(
         text,
         textAlign: TextAlign.center,

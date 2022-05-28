@@ -20,8 +20,8 @@ class SelectableItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(5.0),
-      child: GestureDetector(
-        onTap: onTap,
+      child: TextButton(
+        onPressed: onTap,
         child: Column(
           children: [
             Row(

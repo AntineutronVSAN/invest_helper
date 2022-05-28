@@ -3,6 +3,7 @@
 import 'package:invests_helper/data/models/response/google_sheets/all_lists_data.dart';
 import 'package:invests_helper/data/models/response/google_sheets/buys_cash.dart';
 import 'package:invests_helper/data/models/response/google_sheets/buys_cash_status.dart';
+import 'package:invests_helper/data/models/response/google_sheets/diet.dart';
 import 'package:invests_helper/data/models/response/google_sheets/google_sheet_order.dart';
 import 'package:invests_helper/data/repositories/google_sheet/base_google_sheet_repo.dart';
 import 'package:invests_helper/data/services/google_sheet/google_sheet_service_base.dart';
@@ -18,6 +19,7 @@ class GoogleSheetDataService implements BaseGoogleSheetDataService {
   List<BuysCashStatus>? buysCashStatusesCache;
   List<BuysCash>? buysCashCache;
   AllListsGoogleSheetData? allListsGoogleSheetDataCache;
+  DietAllDataModel? dietAllDataModelCache;
 
   @override
   BaseGoogleSheetRepository getRepository() {
@@ -87,5 +89,20 @@ class GoogleSheetDataService implements BaseGoogleSheetDataService {
       return data;
     }
     return allListsGoogleSheetDataCache!;
+  }
+
+  @override
+  Future<DietAllDataModel> getAllDietData({required bool isRefresh}) async {
+    if (isRefresh || dietAllDataModelCache == null) {
+      final data = await googleSheetRepository.getAllDietData();
+      dietAllDataModelCache = data;
+      return data;
+    }
+    return dietAllDataModelCache!;
+  }
+
+  @override
+  Future<void> addWeightJournalEntry({required DietWeightJournalModel entry}) async {
+    await googleSheetRepository.addWeightJournalEntry(entry: entry);
   }
 }

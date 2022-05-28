@@ -7,7 +7,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:invests_helper/theme/ui_colors.dart';
 
 class IHTextFromField extends StatefulWidget {
-  final GlobalKey<FormBuilderState> formKey;
+  final GlobalKey<FormBuilderState>? formKey;
   final String name;
   final String label;
   final TextInputType textInputType;
@@ -24,7 +24,7 @@ class IHTextFromField extends StatefulWidget {
 
   const IHTextFromField({
     Key? key,
-    required this.formKey,
+    this.formKey,
     required this.name,
     required this.label,
     required this.focusNode,
@@ -93,7 +93,7 @@ class _TextFormWidgetState extends State<IHTextFromField> {
       focusNode: widget.focusNode,
       onSubmitted: widget.onSubmitted,
       onChanged: (e) {
-        widget.formKey.currentState?.fields[widget.name]?.validate();
+        widget.formKey?.currentState?.fields[widget.name]?.validate();
         if (widget.onChanged != null) {
           widget.onChanged!.call(e);
         }

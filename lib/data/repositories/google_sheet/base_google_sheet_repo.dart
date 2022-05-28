@@ -3,6 +3,7 @@
 import 'package:invests_helper/data/models/response/google_sheets/all_lists_data.dart';
 import 'package:invests_helper/data/models/response/google_sheets/buys_cash.dart';
 import 'package:invests_helper/data/models/response/google_sheets/buys_cash_status.dart';
+import 'package:invests_helper/data/models/response/google_sheets/diet.dart';
 import 'package:invests_helper/data/models/response/google_sheets/google_sheet_order.dart';
 
 abstract class BaseGoogleSheetRepository {
@@ -33,4 +34,11 @@ abstract class BaseGoogleSheetRepository {
 
   /// Получить все категориальные данные
   Future<AllListsGoogleSheetData> getAllCategoryListData();
+
+  /// Получить все данные, связанные с диетой
+  Future<DietAllDataModel> getAllDietData();
+
+  /// Добавить в таблицу новую запись веса
+  Future<void> addWeightJournalEntry({required DietWeightJournalModel entry});
+
 }
