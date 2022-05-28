@@ -46,11 +46,11 @@ class DietJournalPage extends InvestHelperStatelessWidget<DietJournalBloc,
             slivers: [
               // Add the app bar to the CustomScrollView.
               SliverAppBar(
-                title: _getSliverAppBarTitleWidget(state: newState, context: context),
+                title: _getSliverAppBarTitleWidget(
+                    state: newState, context: context),
                 floating: true,
                 //flexibleSpace: Placeholder(),
                 expandedHeight: 100,
-
               ),
               SliverToBoxAdapter(
                 child: Padding(
@@ -72,16 +72,18 @@ class DietJournalPage extends InvestHelperStatelessWidget<DietJournalBloc,
   Widget _getSliverAppBarTitleWidget({
     required BuildContext context,
     required DietJournalState state,
-}) {
+  }) {
     return Column(
       children: [
         IHButton(
           text: 'Новая запись',
           onPressed: () async {
-            final result = await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            await Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) {
               return TabNavigator.getCreateDietJournalEntryPage(
-                  users: state.users.values.toList(),
-                  products: state.products.values.toList(),
+                users: state.users.values.toList(),
+                products: state.products.values.toList(),
+                dietJournalBloc: bloc,
               );
             }));
           },
@@ -95,19 +97,20 @@ class DietJournalPage extends InvestHelperStatelessWidget<DietJournalBloc,
     required DietJournalState state,
   }) {
     return IHCalendarWithList<DietJournalModel>(
-        markersData: state.markersCount,
-        listItemsBuilder: (context, item) {
-          return DietListItem(
-            entry: item,
-            user: state.users[item.userId]!,
-            product: state.products[item.productId]!,
-          );
-        },
-        selectedDay: state.selectedDay,
-        onDaySelected: (start, end) {
-          bloc.selectDay(selectedDay: start);
-        },
+      markersData: state.markersCount,
+      listItemsBuilder: (context, item) {
+        return DietListItem(
+          entry: item,
+          user: state.users[item.userId]!,
+          product: state.products[item.productId]!,
+        );
+      },
+      selectedDay: state.selectedDay,
+      onDaySelected: (start, end) {
+        bloc.selectDay(selectedDay: start);
+      },
       markerBuilder: _getCalendarItemWidget,
+      loading: state.loading,
     );
   }
 
@@ -176,6 +179,4 @@ class DietJournalPage extends InvestHelperStatelessWidget<DietJournalBloc,
     }
     return state.markersCount[dateTimeStrDay]!;
   }
-
-
 }

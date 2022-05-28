@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:invests_helper/data/models/response/google_sheets/diet.dart';
+import 'package:invests_helper/parts/diet/diet_journal/diet_journal_bloc.dart';
+import 'package:invests_helper/parts/diet/diet_journal/diet_journal_event.dart';
 import 'package:invests_helper/theme/ui_colors.dart';
 import 'package:invests_helper/ui_package/app_bar/app_bar.dart';
 import 'package:invests_helper/ui_package/app_form/app_form_page.dart';
+import 'package:invests_helper/utils/time_service.dart';
+
+
 
 class CreateDietEntryPage extends StatefulWidget {
   final List<DietUserModel> users;
   final List<DietProductModel> products;
+  final DietJournalBloc dietJournalBloc;
 
   const CreateDietEntryPage({
     Key? key,
     required this.users,
     required this.products,
+    required this.dietJournalBloc,
   }) : super(key: key);
 
   @override
@@ -38,11 +45,26 @@ class _CreateDietEntryPageState extends State<CreateDietEntryPage> {
             child: SingleChildScrollView(
               child: IHAppForm(
                 onSubmit: (data) async {
-                  print(data);
+
+                  final selectedUserIndex = data[createDietEntryUserSelectionJsonKey] as int;
+                  final selectedProductIndex = data[createDietEntryProductSelectionJsonKey] as int;
+
+                  final newJournalData = DietJournalModel(
+                      id: -1,
+                      dateTime: IHTimeService.getNowFormattedWithTime(),
+                      userId: widget.users[selectedUserIndex].id,
+                      productId: widget.products[selectedProductIndex].id,
+                      weight: double.parse(data[createDietEntryProductWeightJsonKey]),
+                  );
+                  widget.dietJournalBloc.add(
+                      DietJournalAddNewEntryEvent(entry: newJournalData));
+                  await widget.dietJournalBloc.stream.first;
+                  await widget.dietJournalBloc.stream.first;
+                  return true;
                 },
                 items: [
                   AppFromPageItem(
-                    jsonKey: 'createDietEntryUserSelectionJsonKey',
+                    jsonKey: createDietEntryUserSelectionJsonKey,
                     title: 'Выберите пользователя',
                     type: AppFromType.itemsSelection,
                     titleShort: 'Юзер',
@@ -51,7 +73,7 @@ class _CreateDietEntryPageState extends State<CreateDietEntryPage> {
                         widget.users.map((e) => e.name).toList(),
                   ),
                   AppFromPageItem(
-                    jsonKey: 'createDietEntryProductSelectionJsonKey',
+                    jsonKey: createDietEntryProductSelectionJsonKey,
                     title: 'Выберите продукт',
                     type: AppFromType.itemsSelection,
                     titleShort: 'Продукт',
@@ -60,7 +82,7 @@ class _CreateDietEntryPageState extends State<CreateDietEntryPage> {
                         widget.products.map((e) => e.name).toList(),
                   ),
                   AppFromPageItem(
-                      jsonKey: 'createDietEntryProductWeightJsonKey',
+                      jsonKey: createDietEntryProductWeightJsonKey,
                       title: 'Введите вес продукта в граммах',
                       type: AppFromType.floatFrom,
                       titleShort: 'Вес гр.',
@@ -91,3 +113,7 @@ class _CreateDietEntryPageState extends State<CreateDietEntryPage> {
     ];
   }
 }
+
+const String createDietEntryUserSelectionJsonKey = 'createDietEntryUserSelectionJsonKey';
+const String createDietEntryProductSelectionJsonKey = 'createDietEntryProductSelectionJsonKey';
+const String createDietEntryProductWeightJsonKey = 'createDietEntryProductWeightJsonKey';

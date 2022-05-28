@@ -41,4 +41,6 @@ abstract class BaseGoogleSheetRepository {
   /// Добавить в таблицу новую запись веса
   Future<void> addWeightJournalEntry({required DietWeightJournalModel entry});
 
+  /// Добавить в таблицу новую запись дневника диеты
+  Future<void> addDietJournalEntry({required DietJournalModel entry});
 }

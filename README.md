@@ -77,7 +77,7 @@
 * [Selectable widget](https://github.com/AntineutronVSAN/invest_helper/tree/main/lib/ui_package)
 * [App slider](https://github.com/AntineutronVSAN/invest_helper/tree/main/lib/ui_package)
 * [Unfocus](https://github.com/AntineutronVSAN/invest_helper/tree/main/lib/ui_package)
-* Если нужна простая страничка с формами, сначала нужно попробовать создать её через конструктор [IHAppForm](https://github.com/AntineutronVSAN/invest_helper/tree/main/lib/ui_package)
+* Если нужна простая страничка с формами, сначала нужно попробовать создать её через конструктор [IHAppForm](https://github.com/AntineutronVSAN/invest_helper/tree/dev/lib/ui_package/app_form)
 
 ### Build models
 
@@ -85,4 +85,4 @@ flutter pub run build_runner build --delete-conflicting-outputs
 
 ### TODO Список
 
-- [ ] - Перенести все страницы форм на общую страницу форм [IHAppForm](https://github.com/AntineutronVSAN/invest_helper/tree/main/lib/ui_package)
+- [ ] - Перенести все страницы форм на общую страницу форм [IHAppForm](https://github.com/AntineutronVSAN/invest_helper/tree/dev/lib/ui_package/app_form)

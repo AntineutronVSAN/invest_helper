@@ -21,6 +21,26 @@ class DietJournalBloc extends InvestHelperBloc<
 
   DietJournalBloc({required this.baseGoogleSheetDataService}) : super(LoadingStateBase()) {
     on<DietJournalDaySelectedEvent>(_onDietJournalDaySelectedEvent);
+    on<DietJournalAddNewEntryEvent>(_onDietJournalAddNewEntryEvent);
+  }
+
+  Future<void> _onDietJournalAddNewEntryEvent(
+      DietJournalAddNewEntryEvent event, Emitter<GlobalState<DietJournalState>> emit) async {
+    final currentState = state.getContent() ?? DietJournalState.empty();
+
+    try {
+      emit(currentState.copyWith(loading: true).toContent());
+      await baseGoogleSheetDataService.addDietJournalEntry(entry: event.entry);
+      emit(currentState.copyWith(loading: false).toContent());
+      refreshEvent();
+
+    } catch(e) {
+      handleHttpException(e, emit, currentState);
+
+    }
+
+
+
   }
 
   void selectDay({required DateTime selectedDay}) {
@@ -44,6 +64,7 @@ class DietJournalBloc extends InvestHelperBloc<
     //emit(currentState.toContent());
 
     try {
+      emit(currentState.copyWith(loading: true).toContent());
       final dietData = await baseGoogleSheetDataService.getAllDietData(
           isRefresh: isRefresh);
 
@@ -54,6 +75,7 @@ class DietJournalBloc extends InvestHelperBloc<
         markersCount: markersCount,
         users: buildMapFromList<DietUserModel>(data: dietData.dietUsers),
         products: buildMapFromList<DietProductModel>(data: dietData.dietProducts),
+        loading:  false,
       ).toContent());
 
     } catch(e) {

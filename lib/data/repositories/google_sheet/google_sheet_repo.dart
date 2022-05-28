@@ -36,6 +36,7 @@ class GoogleSheetRepository extends BaseBackendClient implements BaseGoogleSheet
 
   static const String createNewFiatBuyRoute = 'createBuysCashCode';
   static const String createNewWeightJournalEntryRoute = 'dietWeightJournalAddRoute';
+  static const String createNewDietJournalEntryRoute = 'dietJournalAddRouteName';
   // [POST] END
   @override
   Future<int> getOrdersCount() async {
@@ -194,6 +195,24 @@ class GoogleSheetRepository extends BaseBackendClient implements BaseGoogleSheet
       'type': createNewWeightJournalEntryRoute,
       'data': {
         'dietWeightJournalAddDataKey': entry.toJson(),
+      },
+    };
+
+    final result = await makePostResponse(
+      startScriptUrlProd, type: CryptoMarketType.googleSheets,
+      body: requestBody,
+      queryParameters: {
+        accessTokenKey: accessToken,
+      },
+    );
+  }
+
+  @override
+  Future<void> addDietJournalEntry({required DietJournalModel entry}) async {
+    final requestBody = {
+      'type': createNewDietJournalEntryRoute,
+      'data': {
+        'dietJournal': entry.toJson(),
       },
     };
 

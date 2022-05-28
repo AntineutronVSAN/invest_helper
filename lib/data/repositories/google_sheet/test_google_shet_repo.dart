@@ -69,4 +69,10 @@ class TestGoogleSheetRepository extends BaseBackendClient implements BaseGoogleS
     throw UnimplementedError();
   }
 
+  @override
+  Future<void> addDietJournalEntry({required DietJournalModel entry}) {
+    // TODO: implement addDietJournalEntry
+    throw UnimplementedError();
+  }
+
 }

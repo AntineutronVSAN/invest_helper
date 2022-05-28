@@ -11,11 +11,14 @@ class DietJournalState extends BaseState<DietJournalState> {
   final Map<int, DietUserModel> users;
   final Map<int, DietProductModel> products;
 
+  final bool loading;
+
   DietJournalState({
     required this.selectedDay,
     required this.markersCount,
     required this.users,
     required this.products,
+    this.loading = false,
   });
 
   factory DietJournalState.empty() {
@@ -32,12 +35,14 @@ class DietJournalState extends BaseState<DietJournalState> {
     Map<String, List<DietJournalModel>>? markersCount,
     Map<int, DietUserModel>? users,
     Map<int, DietProductModel>? products,
+    bool? loading,
   }) {
     return DietJournalState(
       selectedDay: selectedDay ?? this.selectedDay,
       markersCount: markersCount ?? this.markersCount,
       users: users ?? this.users,
       products: products ?? this.products,
+      loading: loading ?? false,
     );
   }
 }

@@ -105,4 +105,9 @@ class GoogleSheetDataService implements BaseGoogleSheetDataService {
   Future<void> addWeightJournalEntry({required DietWeightJournalModel entry}) async {
     await googleSheetRepository.addWeightJournalEntry(entry: entry);
   }
+
+  @override
+  Future<void> addDietJournalEntry({required DietJournalModel entry}) async {
+    await googleSheetRepository.addDietJournalEntry(entry: entry);
+  }
 }

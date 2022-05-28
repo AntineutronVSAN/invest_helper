@@ -11,7 +11,7 @@ import 'package:invests_helper/ui_package/select_item_widget/app_select_widget.d
 
 class IHAppForm extends StatefulWidget {
   final List<AppFromPageItem> items;
-  final Future<void> Function(Map<String, dynamic>)? onSubmit;
+  final Future<bool> Function(Map<String, dynamic>)? onSubmit;
 
   final String confirmDialogTitle;
   final String confirmDialogPositive;
@@ -276,11 +276,14 @@ class _IHAppFormState extends State<IHAppForm> {
                     setState(() {
                       loading = true;
                     });
-                    await widget.onSubmit?.call(resultData);
+                    final res = await widget.onSubmit?.call(resultData);
                     setState(() {
                       loading = false;
                     });
-                    Navigator.of(context).pop(true);
+                    if (res ?? true) {
+                      Navigator.of(context).pop(true);
+                    }
+
                   },
                 ),
                 IHSimpleDialogAction(
@@ -302,10 +305,24 @@ class _IHAppFormState extends State<IHAppForm> {
           itemCount: widget.items.length,
           itemBuilder: (context, index) {
             final item = widget.items[index];
-            final data = resultData[item.jsonKey];
-            return Center(child: AppTexts.secondTitleText(text: '${item.titleShort}: $data'));
+            return Center(child: AppTexts.secondTitleText(
+                text: '${item.titleShort}: ${_getItemHumanDescription(item)}'));
           }),
     );
+  }
+
+  String _getItemHumanDescription(AppFromPageItem item) {
+    final data = resultData[item.jsonKey];
+    switch (item.type) {
+      case AppFromType.floatFrom:
+        return data;
+      case AppFromType.intPicker:
+        return data;
+      case AppFromType.floatPicker:
+        return data;
+      case AppFromType.itemsSelection:
+        return item.itemsSelectionOptions![data];
+    }
   }
 
   bool _validate() {
@@ -355,8 +372,7 @@ class _IHAppFormState extends State<IHAppForm> {
 
   void _initSelections(AppFromPageItem item, int i) {
     if (item.type == AppFromType.itemsSelection) {
-      resultData[item.jsonKey] =
-          item.itemsSelectionOptions![item.itemsSelectionInitialValue];
+      resultData[item.jsonKey] = item.itemsSelectionInitialValue;
     }
   }
 }

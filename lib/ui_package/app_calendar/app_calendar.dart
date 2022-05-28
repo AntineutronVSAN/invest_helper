@@ -59,15 +59,18 @@ class _IHCalendarWithListState<T> extends State<IHCalendarWithList<T>> {
       children: [
         _getCalendar(),
         const SizedBox(height: 25.0,),
+        if (widget.loading)
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: AppLoadingsWidget.getWidgetLoadingWidget(),
+          ),
         _getList(),
       ],
     );
   }
 
   Widget _getList() {
-    if (widget.loading) {
-      return AppLoadingsWidget.getWidgetLoadingWidget();
-    }
+
     final dateKey = IHTimeService.onlyDayStr(dateTime: selectedDay!);
     final items = widget.markersData[dateKey];
     if (items == null) {

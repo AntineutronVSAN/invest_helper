@@ -194,8 +194,13 @@ class TabNavigator {
   static Widget getCreateDietJournalEntryPage({
     required List<DietUserModel> users,
     required List<DietProductModel> products,
+    required DietJournalBloc dietJournalBloc,
   }) {
-    final page = CreateDietEntryPage(users: users, products: products);
+    final page = CreateDietEntryPage(
+        users: users,
+        products: products,
+        dietJournalBloc: dietJournalBloc,
+    );
     return page;
   }
 }
