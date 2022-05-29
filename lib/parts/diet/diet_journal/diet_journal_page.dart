@@ -6,10 +6,13 @@ import 'package:invests_helper/parts/diet/diet_journal/diet_journal_bloc.dart';
 import 'package:invests_helper/parts/diet/diet_journal/diet_journal_event.dart';
 import 'package:invests_helper/parts/diet/diet_journal/diet_journal_state.dart';
 import 'package:invests_helper/parts/tab_navigator.dart';
+import 'package:invests_helper/theme/texts.dart';
 import 'package:invests_helper/theme/ui_colors.dart';
 import 'package:invests_helper/ui_package/app_bar/app_bar.dart';
 import 'package:invests_helper/ui_package/app_button/app_button.dart';
 import 'package:invests_helper/ui_package/app_calendar/app_calendar.dart';
+import 'package:invests_helper/ui_package/app_pages/app_page_with_calendar_data.dart';
+import 'package:invests_helper/ui_package/clicable_card/clicable_card.dart';
 import 'package:invests_helper/ui_package/refresh_indicator/refresh_indicator.dart';
 import 'package:invests_helper/utils/time_service.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -28,90 +31,122 @@ class DietJournalPage extends InvestHelperStatelessWidget<DietJournalBloc,
 
   @override
   Widget onStateLoaded(DietJournalState newState, BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: iHAppBar(
-            title: 'Дневник диеты',
-            onBackTap: () {
-              Navigator.of(context).pop();
-            }),
-        backgroundColor: AppColors.primaryColor,
-        body: AppRefreshIndicator(
-          onRefresh: () async {
-            bloc.refreshEvent();
-            await bloc.stream.first;
-          },
-          child: CustomScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            slivers: [
-              // Add the app bar to the CustomScrollView.
-              SliverAppBar(
-                title: _getSliverAppBarTitleWidget(
-                    state: newState, context: context),
-                floating: true,
-                //flexibleSpace: Placeholder(),
-                expandedHeight: 100,
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    children: [
-                      _getCalendar(state: newState, context: context),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+
+    return IHWidgetWithBarCalendar<DietJournalModel>(
+      calendarMarkersData: newState.markersCount,
+      calendarListItemsBuilder: (context, item) {
+        return DietListItem(
+          entry: item,
+          user: newState.users[item.userId]!,
+          product: newState.products[item.productId]!,
+        );
+      },
+      calendarSelectedDay: newState.selectedDay,
+      calendarOnDaySelected: (start, end) {
+        bloc.selectDay(selectedDay: start);
+      },
+      calendarMarkerBuilder: _getCalendarItemWidget,
+      calendarLoading: newState.loading,
+
+      onRefresh: () async {
+        bloc.refreshEvent();
+        await bloc.stream.first;
+      },
+      appBarBackgroundWidget: _getOverviewSection(state: newState, context: context),
+      appBarBottomWidget: IHButton(
+        //width: 100.0,
+        text: 'Новая запись',
+        onPressed: () {},
       ),
     );
   }
 
-  Widget _getSliverAppBarTitleWidget({
+  Widget _getOverviewSection({
     required BuildContext context,
     required DietJournalState state,
   }) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        IHButton(
-          text: 'Новая запись',
-          onPressed: () async {
-            await Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) {
-              return TabNavigator.getCreateDietJournalEntryPage(
-                users: state.users.values.toList(),
-                products: state.products.values.toList(),
-                dietJournalBloc: bloc,
-              );
-            }));
-          },
-        )
+        IHCard(
+          onPressed: () {},
+          child: SizedBox(
+            height: 120.0,
+            child: SingleChildScrollView(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    children: _getOverviewTexts(state: state, context: context),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
 
-  Widget _getCalendar({
+  List<Widget> _getOverviewTexts({
     required BuildContext context,
     required DietJournalState state,
   }) {
-    return IHCalendarWithList<DietJournalModel>(
-      markersData: state.markersCount,
-      listItemsBuilder: (context, item) {
-        return DietListItem(
-          entry: item,
-          user: state.users[item.userId]!,
-          product: state.products[item.productId]!,
-        );
-      },
-      selectedDay: state.selectedDay,
-      onDaySelected: (start, end) {
-        bloc.selectDay(selectedDay: start);
-      },
-      markerBuilder: _getCalendarItemWidget,
-      loading: state.loading,
-    );
+    return [
+      AppTexts.primaryInfoText(
+          text: 'Что-то там',
+          fontWeight: FontWeight.bold,
+          fontSize: 17.0,
+          padding: const EdgeInsets.symmetric(vertical: 2.0)),
+      AppTexts.primaryInfoText(
+          text: 'Что-то там',
+          fontWeight: FontWeight.bold,
+          fontSize: 17.0,
+          padding: const EdgeInsets.symmetric(vertical: 2.0)),
+      AppTexts.primaryInfoText(
+          text: 'Что-то там',
+          fontWeight: FontWeight.bold,
+          fontSize: 17.0,
+          padding: const EdgeInsets.symmetric(vertical: 2.0)),
+      AppTexts.primaryInfoText(
+          text: 'Что-то там',
+          fontWeight: FontWeight.bold,
+          fontSize: 17.0,
+          padding: const EdgeInsets.symmetric(vertical: 2.0)),
+      AppTexts.primaryInfoText(
+          text: 'Что-то там',
+          fontWeight: FontWeight.bold,
+          fontSize: 17.0,
+          padding: const EdgeInsets.symmetric(vertical: 2.0)),
+      AppTexts.primaryInfoText(
+          text: 'Что-то там',
+          fontWeight: FontWeight.bold,
+          fontSize: 17.0,
+          padding: const EdgeInsets.symmetric(vertical: 2.0)),
+      AppTexts.primaryInfoText(
+          text: 'Что-то там',
+          fontWeight: FontWeight.bold,
+          fontSize: 17.0,
+          padding: const EdgeInsets.symmetric(vertical: 2.0)),
+      AppTexts.primaryInfoText(
+          text: 'Что-то там',
+          fontWeight: FontWeight.bold,
+          fontSize: 17.0,
+          padding: const EdgeInsets.symmetric(vertical: 2.0)),
+    ];
+  }
+
+  Future<void> _onAddPressed({
+    required BuildContext context,
+    required DietJournalState state,
+  }) async {
+    await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return TabNavigator.getCreateDietJournalEntryPage(
+        users: state.users.values.toList(),
+        products: state.products.values.toList(),
+        dietJournalBloc: bloc,
+      );
+    }));
   }
 
   Widget? _getCalendarItemWidget(

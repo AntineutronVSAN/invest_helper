@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:invests_helper/theme/ui_colors.dart';
 
@@ -11,6 +9,8 @@ class IHCard extends StatelessWidget {
   final Clip clipBehavior;
   final double? height;
   final EdgeInsets padding;
+  final EdgeInsets contentPadding;
+  final double cardBorderRadius;
 
   const IHCard({
     Key? key,
@@ -21,26 +21,33 @@ class IHCard extends StatelessWidget {
     this.decoration = const BoxDecoration(),
     this.height,
     this.padding = const EdgeInsets.all(8.0),
+    this.contentPadding = const EdgeInsets.all(8.0),
+    this.cardBorderRadius = 8.0,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: padding,
-      child: Align(
-        child: SizedBox(
-          height: height,
-          child: DecoratedBox(
-            decoration: decoration,
-            child: TextButton(
-                clipBehavior: clipBehavior,
-                style: style ?? TextButton.styleFrom(
-                    primary: AppColors.primaryTextColor,
-                    backgroundColor: AppColors.secondColor),
-                onPressed: onPressed,
-                child: child),
-          ),
-        ),
+      child: SizedBox(
+        height: height,
+        child: ElevatedButton(
+            clipBehavior: clipBehavior,
+
+            style: style ??
+                TextButton.styleFrom(
+                  primary: AppColors.primaryTextColor,
+                  backgroundColor: AppColors.secondColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(cardBorderRadius), // <-- Radius
+                  ),
+                  //padding: padding
+                ),
+            onPressed: onPressed,
+            child: Padding(
+              padding: contentPadding,
+              child: child,
+            )),
       ),
     );
   }
@@ -56,12 +63,12 @@ class AmRoundedCard extends StatelessWidget {
 
   const AmRoundedCard(
       {Key? key,
-        required this.child,
-        this.onPressed,
-        this.clipBehavior = Clip.none,
-        this.backgroundColor = Colors.white,
-        this.borderWidth = 1,
-        this.decoration = const BoxDecoration()})
+      required this.child,
+      this.onPressed,
+      this.clipBehavior = Clip.none,
+      this.backgroundColor = Colors.white,
+      this.borderWidth = 1,
+      this.decoration = const BoxDecoration()})
       : super(key: key);
 
   @override
@@ -83,4 +90,3 @@ class AmRoundedCard extends StatelessWidget {
         child: child);
   }
 }
-

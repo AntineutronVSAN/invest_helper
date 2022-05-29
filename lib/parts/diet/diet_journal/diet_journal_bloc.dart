@@ -61,21 +61,18 @@ class DietJournalBloc extends InvestHelperBloc<
     required Emitter<GlobalState<DietJournalState>> emit,
   }) async {
     final currentState = state.getContent() ?? DietJournalState.empty();
-    //emit(currentState.toContent());
 
     try {
       emit(currentState.copyWith(loading: true).toContent());
-      final dietData = await baseGoogleSheetDataService.getAllDietData(
-          isRefresh: isRefresh);
 
-      final markersCount = buildMarkersCount<DietJournalModel>(
-          data: dietData.dietJournal);
+      final entities = await _loadAndCalculateEntities(isRefresh: isRefresh);
 
       emit(currentState.copyWith(
-        markersCount: markersCount,
-        users: buildMapFromList<DietUserModel>(data: dietData.dietUsers),
-        products: buildMapFromList<DietProductModel>(data: dietData.dietProducts),
-        loading:  false,
+        markersCount: entities.markersCount,
+        users: buildMapFromList<DietUserModel>(data: entities.dietData.dietUsers),
+        products: buildMapFromList<DietProductModel>(data: entities.dietData.dietProducts),
+        loading: false,
+        statisticsData: entities.statisticsData,
       ).toContent());
 
     } catch(e) {
@@ -95,4 +92,38 @@ class DietJournalBloc extends InvestHelperBloc<
     await _refreshData(isRefresh: true, emit: emit);
   }
 
+  Future<_DietJournalEntities> _loadAndCalculateEntities({required bool isRefresh}) async {
+    final dietData = await baseGoogleSheetDataService.getAllDietData(
+        isRefresh: isRefresh);
+    final result = _DietJournalEntities(dietData: dietData);
+
+    calculateMarkersData(result);
+    calculateStatistics(result);
+
+    return result;
+  }
+
+  void calculateMarkersData(_DietJournalEntities entities) {
+    final markersCount = buildMarkersCount<DietJournalModel>(
+          data: entities.dietData.dietJournal);
+    entities.markersCount = markersCount;
+  }
+
+  void calculateStatistics(_DietJournalEntities entities) {
+    final statisticsData = DietJournalStatisticsData();
+    entities.statisticsData = statisticsData;
+  }
+
 }
+
+class _DietJournalEntities {
+  final DietAllDataModel dietData;
+
+  late final DietJournalStatisticsData statisticsData;
+  late final Map<String, List<DietJournalModel>> markersCount;
+
+  _DietJournalEntities({
+    required this.dietData,
+  });
+}
+

@@ -11,6 +11,8 @@ class DietJournalState extends BaseState<DietJournalState> {
   final Map<int, DietUserModel> users;
   final Map<int, DietProductModel> products;
 
+  final DietJournalStatisticsData? statisticsData;
+
   final bool loading;
 
   DietJournalState({
@@ -19,6 +21,7 @@ class DietJournalState extends BaseState<DietJournalState> {
     required this.users,
     required this.products,
     this.loading = false,
+    this.statisticsData,
   });
 
   factory DietJournalState.empty() {
@@ -36,6 +39,7 @@ class DietJournalState extends BaseState<DietJournalState> {
     Map<int, DietUserModel>? users,
     Map<int, DietProductModel>? products,
     bool? loading,
+    DietJournalStatisticsData? statisticsData,
   }) {
     return DietJournalState(
       selectedDay: selectedDay ?? this.selectedDay,
@@ -43,6 +47,14 @@ class DietJournalState extends BaseState<DietJournalState> {
       users: users ?? this.users,
       products: products ?? this.products,
       loading: loading ?? false,
+      statisticsData: statisticsData ?? this.statisticsData,
     );
   }
+}
+
+class DietJournalStatisticsData {
+  final double sadfasdf = 10.0;
+  final double sasddfasdf = 20.0;
+  final double sadffdasdf = 30.0;
+  final double sadfadgfsdf = 40.0;
 }

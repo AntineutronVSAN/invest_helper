@@ -12,7 +12,8 @@ class IHButton extends StatelessWidget {
   final EdgeInsets outsidePadding;
   final EdgeInsets insidePadding;
   final Size? minimumSize;
-  final Size maximumSize;
+  final Size? maximumSize;
+  final double? width;
 
   const IHButton({
     Key? key,
@@ -24,7 +25,8 @@ class IHButton extends StatelessWidget {
     this.outsidePadding = const EdgeInsets.all(18.0),
     this.insidePadding = const EdgeInsets.symmetric(horizontal: 5.0),
     this.minimumSize,
-    this.maximumSize = const Size(88, 44),
+    this.maximumSize,
+    this.width,
   }) : super(key: key);
 
   @override
@@ -44,7 +46,7 @@ class IHButton extends StatelessWidget {
       child: Padding(
         padding: outsidePadding,
         child: SizedBox(
-          //width: minWidth,
+          width: maximumSize?.width ?? width,
           child: TextButton(
             style: flatButtonStyle,
             onPressed: loading ? null : onPressed,
@@ -64,4 +66,31 @@ class IHButton extends StatelessWidget {
       ),
     );
   }
+}
+
+class IHCircleButton extends StatelessWidget {
+
+  final Function()? onPressed;
+  final Widget icon;
+
+  const IHCircleButton({
+    Key? key,
+    this.onPressed,
+    required this.icon,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: icon,
+      style: ElevatedButton.styleFrom(
+        shape: const CircleBorder(),
+        padding: const EdgeInsets.all(0),
+        primary: AppColors.secondTextColor,
+        onPrimary: AppColors.primaryColor,
+      ),
+    );
+  }
+
 }

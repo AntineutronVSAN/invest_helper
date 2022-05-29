@@ -57,13 +57,13 @@ class _IHCalendarWithListState<T> extends State<IHCalendarWithList<T>> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _getCalendar(),
-        const SizedBox(height: 25.0,),
         if (widget.loading)
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: AppLoadingsWidget.getWidgetLoadingWidget(),
           ),
+        _getCalendar(),
+        const SizedBox(height: 25.0,),
         _getList(),
       ],
     );
