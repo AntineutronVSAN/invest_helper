@@ -123,6 +123,9 @@ class _IHAppFormState extends State<IHAppForm> {
       case AppFromType.itemsSelection:
         formWidget = _getItemSelection(item: item, index: index);
         break;
+      case AppFromType.floatFromWithOptions:
+        formWidget = _getFloatFromWithOptions(item: item, index: index);
+        break;
     }
 
     return Column(
@@ -134,14 +137,36 @@ class _IHAppFormState extends State<IHAppForm> {
     );
   }
 
-  Widget _getFormErrorSection({
+  Widget _getFloatFromWithOptions({
     required AppFromPageItem item,
     required int index,
   }) {
-    if (errors[index] != null) {
-      return AppTexts.errorText(text: errors[index]!);
-    }
-    return const SizedBox.shrink();
+    return IHTextFromFieldWithOptions<double>(
+
+      options: item.floatFromWithOptionsOptions!,
+      optionsHandlers: item.floatFromWithOptionsHandlers!,
+      optionValue: item.floatFromWithOptionsValue!,
+      onOptionSelected: item.floatFromWithOptionsOnOptionSelected,
+
+      name: item.jsonKey,
+      label: item.titleShort,
+      focusNode: floatFromFocusNodes[index]!,
+      validator: FormBuilderValidators.compose([
+        FormBuilderValidators.maxLength(item.floatFromMaxLength,
+            errorText: 'Максимум ${item.floatFromMaxLength} символов'),
+        FormBuilderValidators.match(r'^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$',
+            errorText: 'Неверный формат'),
+        if (item.isRequired)
+          FormBuilderValidators.required(errorText: 'Обязательное поле'),
+      ]),
+      textInputType: TextInputType.number,
+      onChanged: (val) {
+        final res = val ?? '0.0';
+        floatFromCurrentValues[index] = res;
+        resultData[item.jsonKey] = res;
+      },
+      formKey: formKey,
+    );
   }
 
   Widget _getItemSelection({
@@ -156,6 +181,7 @@ class _IHAppFormState extends State<IHAppForm> {
         setState(() {
           itemsSelectionSelectedValues[index] = selectedIndex;
           resultData[item.jsonKey] = selectedIndex;
+          item.itemsSelectionOnItemSelected?.call(selectedIndex);
         });
       },
     );
@@ -222,7 +248,17 @@ class _IHAppFormState extends State<IHAppForm> {
       case AppFromType.itemsSelection:
         _itemsSelectionItemChecker(item);
         break;
+      case AppFromType.floatFromWithOptions:
+        _floatFieldWithOptionsItemChecker(item);
+        break;
     }
+  }
+  void _floatFieldWithOptionsItemChecker(AppFromPageItem item) {
+    assert(item.floatFromMaxLength > 0,
+    'Для поля типа floatFrom должно быть определено поле maxLength');
+    assert(item.floatFromWithOptionsOptions != null);
+    assert(item.floatFromWithOptionsHandlers != null);
+    assert(item.floatFromWithOptionsValue != null);
   }
 
   void _floatFieldItemChecker(AppFromPageItem item) {
@@ -253,6 +289,9 @@ class _IHAppFormState extends State<IHAppForm> {
       case AppFromType.floatPicker:
         break;
       case AppFromType.itemsSelection:
+        break;
+      case AppFromType.floatFromWithOptions:
+        floatFromFocusNodes[index] = FocusNode();
         break;
     }
   }
@@ -322,6 +361,8 @@ class _IHAppFormState extends State<IHAppForm> {
         return data;
       case AppFromType.itemsSelection:
         return item.itemsSelectionOptions![data];
+      case AppFromType.floatFromWithOptions:
+        return data;
     }
   }
 
@@ -375,6 +416,16 @@ class _IHAppFormState extends State<IHAppForm> {
       resultData[item.jsonKey] = item.itemsSelectionInitialValue;
     }
   }
+
+  Widget _getFormErrorSection({
+    required AppFromPageItem item,
+    required int index,
+  }) {
+    if (errors[index] != null) {
+      return AppTexts.errorText(text: errors[index]!);
+    }
+    return const SizedBox.shrink();
+  }
 }
 
 class AppFromPageItem {
@@ -399,6 +450,13 @@ class AppFromPageItem {
   // Для AppFromType.itemsSelection
   final List<dynamic>? itemsSelectionOptions;
   final int itemsSelectionInitialValue;
+  final Function(dynamic)? itemsSelectionOnItemSelected;
+
+  // Для AppFromType.floatFromWithOptions
+  final List<String>? floatFromWithOptionsOptions;
+  final List<double Function(double)>? floatFromWithOptionsHandlers;
+  final Function(double)? floatFromWithOptionsOnOptionSelected;
+  final double? floatFromWithOptionsValue;
 
   AppFromPageItem({
     required this.jsonKey,
@@ -415,12 +473,18 @@ class AppFromPageItem {
     this.itemsSelectionOptions,
     this.itemsSelectionInitialValue = 0,
     this.validators,
+    this.floatFromWithOptionsOptions,
+    this.floatFromWithOptionsHandlers,
+    this.floatFromWithOptionsOnOptionSelected,
+    this.floatFromWithOptionsValue,
+    this.itemsSelectionOnItemSelected,
   });
 }
 
 enum AppFromType {
   //textFrom,
   floatFrom,
+  floatFromWithOptions,
   //intForm,
   intPicker,
   floatPicker,

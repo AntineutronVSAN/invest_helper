@@ -53,8 +53,10 @@ class DietJournalState extends BaseState<DietJournalState> {
 }
 
 class DietJournalStatisticsData {
-  final double sadfasdf = 10.0;
-  final double sasddfasdf = 20.0;
-  final double sadffdasdf = 30.0;
-  final double sadfadgfsdf = 40.0;
+  final double totalKKal;
+  final double totalRub;
+  DietJournalStatisticsData({
+    required this.totalKKal,
+    required this.totalRub,
+});
 }

@@ -42,6 +42,9 @@ DietProductModel _$DietProductModelFromJson(Map<String, dynamic> json) =>
       squirrels: (json['squirrels'] as num).toDouble(),
       carbohydrates: (json['carbohydrates'] as num).toDouble(),
       fats: (json['fats'] as num).toDouble(),
+      oneProductWeight: (json['oneProductWeight'] as num).toDouble(),
+      oneProductWeightDescription:
+          json['oneProductWeightDescription'] as String,
     );
 
 Map<String, dynamic> _$DietProductModelToJson(DietProductModel instance) =>
@@ -54,6 +57,8 @@ Map<String, dynamic> _$DietProductModelToJson(DietProductModel instance) =>
       'squirrels': instance.squirrels,
       'carbohydrates': instance.carbohydrates,
       'fats': instance.fats,
+      'oneProductWeight': instance.oneProductWeight,
+      'oneProductWeightDescription': instance.oneProductWeightDescription,
     };
 
 DietUserModel _$DietUserModelFromJson(Map<String, dynamic> json) =>

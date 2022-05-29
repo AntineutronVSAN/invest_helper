@@ -33,6 +33,10 @@ class DietProductModel implements AppModelWithId {
   final double squirrels;
   final double carbohydrates;
   final double fats;
+  /// Сколько весит одна единица продукта
+  final double oneProductWeight;
+  /// Описание, что значит эта единицы
+  final String oneProductWeightDescription;
 
   DietProductModel({
     required this.id,
@@ -43,6 +47,8 @@ class DietProductModel implements AppModelWithId {
     required this.squirrels,
     required this.carbohydrates,
     required this.fats,
+    required this.oneProductWeight,
+    required this.oneProductWeightDescription,
   });
 
   @override

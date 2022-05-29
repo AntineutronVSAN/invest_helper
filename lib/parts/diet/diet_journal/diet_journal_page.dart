@@ -54,9 +54,10 @@ class DietJournalPage extends InvestHelperStatelessWidget<DietJournalBloc,
       },
       appBarBackgroundWidget: _getOverviewSection(state: newState, context: context),
       appBarBottomWidget: IHButton(
-        //width: 100.0,
         text: 'Новая запись',
-        onPressed: () {},
+        onPressed: () async {
+          await _onAddPressed(state: newState, context: context);
+        },
       ),
     );
   }
@@ -94,42 +95,12 @@ class DietJournalPage extends InvestHelperStatelessWidget<DietJournalBloc,
   }) {
     return [
       AppTexts.primaryInfoText(
-          text: 'Что-то там',
+          text: 'Всего - ${state.statisticsData?.totalKKal.toStringAsFixed(0)} ккал',
           fontWeight: FontWeight.bold,
           fontSize: 17.0,
           padding: const EdgeInsets.symmetric(vertical: 2.0)),
       AppTexts.primaryInfoText(
-          text: 'Что-то там',
-          fontWeight: FontWeight.bold,
-          fontSize: 17.0,
-          padding: const EdgeInsets.symmetric(vertical: 2.0)),
-      AppTexts.primaryInfoText(
-          text: 'Что-то там',
-          fontWeight: FontWeight.bold,
-          fontSize: 17.0,
-          padding: const EdgeInsets.symmetric(vertical: 2.0)),
-      AppTexts.primaryInfoText(
-          text: 'Что-то там',
-          fontWeight: FontWeight.bold,
-          fontSize: 17.0,
-          padding: const EdgeInsets.symmetric(vertical: 2.0)),
-      AppTexts.primaryInfoText(
-          text: 'Что-то там',
-          fontWeight: FontWeight.bold,
-          fontSize: 17.0,
-          padding: const EdgeInsets.symmetric(vertical: 2.0)),
-      AppTexts.primaryInfoText(
-          text: 'Что-то там',
-          fontWeight: FontWeight.bold,
-          fontSize: 17.0,
-          padding: const EdgeInsets.symmetric(vertical: 2.0)),
-      AppTexts.primaryInfoText(
-          text: 'Что-то там',
-          fontWeight: FontWeight.bold,
-          fontSize: 17.0,
-          padding: const EdgeInsets.symmetric(vertical: 2.0)),
-      AppTexts.primaryInfoText(
-          text: 'Что-то там',
+          text: 'Поели на - ${state.statisticsData?.totalRub.toStringAsFixed(0)} рублей',
           fontWeight: FontWeight.bold,
           fontSize: 17.0,
           padding: const EdgeInsets.symmetric(vertical: 2.0)),

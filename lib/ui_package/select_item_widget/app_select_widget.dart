@@ -91,8 +91,10 @@ class IHSelectObjectWidget<T> extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AppTexts.subtitleText(
-                      text: options[currentIndex].toString()),
+                Flexible(
+                  child: AppTexts.subtitleText(
+                        text: options[currentIndex].toString()),
+                ),
                 if (selectedIndex == currentIndex)
                   const Icon(
                     Icons.arrow_forward_ios,
