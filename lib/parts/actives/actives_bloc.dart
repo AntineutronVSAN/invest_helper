@@ -212,9 +212,8 @@ class ActivesBloc extends InvestHelperBloc<ActivesEvent,
   }
 
   @override
-  Future<void> onRefreshEvent(BaseRefreshEvent event, Emitter<GlobalState<ActivesState>> emit) {
-    // TODO: implement onRefreshEvent
-    throw UnimplementedError();
+  Future<void> onRefreshEvent(BaseRefreshEvent event, Emitter<GlobalState<ActivesState>> emit) async {
+    add(RefreshPageEvent());
   }
 
 }

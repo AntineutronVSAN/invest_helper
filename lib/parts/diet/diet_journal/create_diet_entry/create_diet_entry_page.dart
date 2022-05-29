@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:invests_helper/data/models/response/google_sheets/diet.dart';
 import 'package:invests_helper/parts/diet/diet_journal/diet_journal_bloc.dart';
 import 'package:invests_helper/parts/diet/diet_journal/diet_journal_event.dart';
+import 'package:invests_helper/parts/diet/widgets/diet_product_card.dart';
 import 'package:invests_helper/theme/ui_colors.dart';
 import 'package:invests_helper/ui_package/app_bar/app_bar.dart';
 import 'package:invests_helper/ui_package/app_form/app_form_page.dart';
@@ -75,19 +76,26 @@ class _CreateDietEntryPageState extends State<CreateDietEntryPage> {
                         widget.users.map((e) => e.name).toList(),
                   ),
                   AppFromPageItem(
-                      jsonKey: createDietEntryProductSelectionJsonKey,
-                      title: 'Выберите продукт',
-                      type: AppFromType.itemsSelection,
-                      titleShort: 'Продукт',
-                      isRequired: true,
-                      itemsSelectionOptions:
-                          widget.products.map((e) => e.name).toList(),
-                      itemsSelectionOnItemSelected: (val) {
-                        final selectedVal = val as int;
-                        setState(() {
-                          selectedProductIndex = selectedVal;
-                        });
-                      }),
+                    jsonKey: createDietEntryProductSelectionJsonKey,
+                    title: 'Выберите продукт',
+                    type: AppFromType.itemsSelection,
+                    titleShort: 'Продукт',
+                    isRequired: true,
+                    itemsSelectionOptions:
+                        widget.products.map((e) => e.name).toList(),
+                    itemsSelectionOnItemSelected: (val) {
+                      final selectedVal = val as int;
+                      setState(() {
+                        selectedProductIndex = selectedVal;
+                      });
+                    },
+                    itemsSelectionLeadingBuilderBuilder: (context, data) {
+                      final productName = data as String;
+                      final product = widget.products.firstWhere(
+                              (element) => element.name == productName);
+                      return DietProductCard(product: product,);
+                    }
+                  ),
                   AppFromPageItem(
                       jsonKey: createDietEntryProductWeightJsonKey,
                       title: 'Введите вес продукта в граммах',

@@ -184,6 +184,7 @@ class _IHAppFormState extends State<IHAppForm> {
           item.itemsSelectionOnItemSelected?.call(selectedIndex);
         });
       },
+      leadingBuilder: item.itemsSelectionLeadingBuilderBuilder,
     );
   }
 
@@ -407,7 +408,6 @@ class _IHAppFormState extends State<IHAppForm> {
       for (var i = 0; i < errors.length; i++) {
         errors[i] = null;
       }
-      ;
     });
   }
 
@@ -430,18 +430,29 @@ class _IHAppFormState extends State<IHAppForm> {
 
 class AppFromPageItem {
   // Общие поля для всех типов
+  /// Ключ для результата текущей формы
+  /// После завершения заполнения всех форм и успешной валидации, результатом является
+  /// json-объект, где ключи определены в данном поле [jsonKey]
   final String jsonKey;
+  /// Короткое название поля. Будет использовано при подтверждении формы
   final String titleShort;
+  /// Длинное название. Будет отображено в виде заголовка перед формой
   final String title;
+  /// Тип формы
   final AppFromType type;
+  /// Обязательная ли форма
   final bool isRequired;
+  /// Кастомыне валидаторы текущей формы
   final List<String? Function(dynamic)>? validators;
 
   // Поля для floatFrom
+  /// Максмально число символов для формы [floatFrom]
   final int floatFromMaxLength;
 
   // Поля для типа AppFromType.intPicker
+  /// Опциональные кнопки для выбора значения. См. [IHIntPicker] и [AppOptionsWidget]
   final List<String>? intPickerOptions;
+  /// Обрадотчики для опциональных кнопок
   final List<int Function(int)>? intPickerHandlers;
   final int intPickerMinValue;
   final int intPickerMaxValue;
@@ -451,6 +462,7 @@ class AppFromPageItem {
   final List<dynamic>? itemsSelectionOptions;
   final int itemsSelectionInitialValue;
   final Function(dynamic)? itemsSelectionOnItemSelected;
+  final Widget Function(BuildContext, dynamic)? itemsSelectionLeadingBuilderBuilder;
 
   // Для AppFromType.floatFromWithOptions
   final List<String>? floatFromWithOptionsOptions;
@@ -478,6 +490,7 @@ class AppFromPageItem {
     this.floatFromWithOptionsOnOptionSelected,
     this.floatFromWithOptionsValue,
     this.itemsSelectionOnItemSelected,
+    this.itemsSelectionLeadingBuilderBuilder,
   });
 }
 

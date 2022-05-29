@@ -9,17 +9,19 @@ class IHSelectObjectWidget<T> extends StatelessWidget {
   final int initialValue;
   final Widget additionalWidget;
 
+  final Widget Function(BuildContext, T)? leadingBuilder;
+
   const IHSelectObjectWidget({
     Key? key,
     required this.options,
     this.onOptionSelected,
     this.initialValue = 0,
     this.additionalWidget = const SizedBox.shrink(),
+    this.leadingBuilder,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     if (options.isEmpty) return const SizedBox.shrink();
 
     return Padding(
@@ -35,7 +37,7 @@ class IHSelectObjectWidget<T> extends StatelessWidget {
         },
         child: Row(
           children: [
-            AppTexts.subtitleText(text: options[initialValue].toString()),
+            _getLeadingWidget(context: context),
             additionalWidget,
             const Spacer(),
             const Icon(
@@ -45,6 +47,19 @@ class IHSelectObjectWidget<T> extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _getLeadingWidget({required BuildContext context}) {
+    final widget = leadingBuilder != null
+        ? leadingBuilder!(context, options[initialValue])
+        : AppTexts.subtitleText(text: options[initialValue].toString());
+
+    return ConstrainedBox(
+      constraints: const BoxConstraints(
+        maxWidth: 300.0,
+      ),
+      child: widget,
     );
   }
 
@@ -93,7 +108,7 @@ class IHSelectObjectWidget<T> extends StatelessWidget {
               children: [
                 Flexible(
                   child: AppTexts.subtitleText(
-                        text: options[currentIndex].toString()),
+                      text: options[currentIndex].toString()),
                 ),
                 if (selectedIndex == currentIndex)
                   const Icon(

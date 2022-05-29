@@ -3,6 +3,7 @@ import 'package:invests_helper/base/bloc_base.dart';
 import 'package:invests_helper/base/bloc_state_base.dart';
 import 'package:invests_helper/base/stateless_base.dart';
 import 'package:invests_helper/theme/error_screen.dart';
+import 'package:invests_helper/ui_package/app_error_page/error_page.dart';
 import 'package:invests_helper/ui_package/loading_widget/loading_widget.dart';
 
 
@@ -19,8 +20,13 @@ abstract class InvestHelperStatelessWidget<
   }
 
   @override
-  Widget onError() {
-    return AppErrorsWidget.getSimpleErrorWidget();
+  Widget onError({required BuildContext context, String? error}) {
+    return IHErrorPage(
+      error: error,
+      onReload: () {
+        bloc.refreshEvent();
+      },
+    );
   }
 
   @override

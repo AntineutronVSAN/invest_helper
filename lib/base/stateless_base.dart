@@ -58,7 +58,7 @@ abstract class StatelessWidgetWithBloc<
             return const SizedBox.shrink();
           }
           if (state is ErrorStateBase) {
-            //return onError(state.getError());
+            //return onError(state.getError() ?? 'Возникла неизвестная ошибка');
           }
           if (state is LoadingStateBase) {
             return onLoading();
@@ -77,18 +77,20 @@ abstract class StatelessWidgetWithBloc<
             return;
           }
           if (state is ErrorStateBase) {
-            final snackBar = SnackBar(
+            /*final snackBar = SnackBar(
               content: Text(state.getError() ?? 'Неизвестная ошибка'),
-              /*action: SnackBarAction(
+              *//*action: SnackBarAction(
                 label: 'Undo',
                 onPressed: () {
                   // Some code to undo the change.
                 },
-              ),*/
-            );
+              ),*//*
+            );*/
 
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
+            //ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return onError(context: context, error: state.getError());
+            }));
             return;
           }
           if (state is LoadingStateBase) {
@@ -104,7 +106,7 @@ abstract class StatelessWidgetWithBloc<
         });
   }
 
-  Widget onError();
+  Widget onError({required BuildContext context, String? error});
 
   Widget onLoading();
 
