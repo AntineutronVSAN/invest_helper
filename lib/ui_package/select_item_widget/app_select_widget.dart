@@ -57,7 +57,7 @@ class IHSelectObjectWidget<T> extends StatelessWidget {
 
     return ConstrainedBox(
       constraints: const BoxConstraints(
-        maxWidth: 300.0,
+        maxWidth: 250.0,
       ),
       child: widget,
     );

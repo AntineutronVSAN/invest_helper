@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:invests_helper/data/models/response/google_sheets/diet.dart';
+import 'package:invests_helper/parts/tab_navigator.dart';
 import 'package:invests_helper/theme/texts.dart';
 import 'package:invests_helper/theme/ui_colors.dart';
 import 'package:invests_helper/ui_package/clicable_card/clicable_card.dart';
@@ -17,8 +18,10 @@ class DietProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IHCard(
-      onPressed: () {
-        print('asdfasdf');
+      onPressed: () async {
+        await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          return TabNavigator.getDietProductDetailsPage(product: product);
+        }));
       },
         child: _getBody(),
     );

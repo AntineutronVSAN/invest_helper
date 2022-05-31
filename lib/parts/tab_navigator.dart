@@ -21,6 +21,7 @@ import 'package:invests_helper/parts/diet/diet_journal/diet_journal_bloc.dart';
 import 'package:invests_helper/parts/diet/diet_journal/diet_journal_page.dart';
 import 'package:invests_helper/parts/diet/diet_main_page/diet_main_bloc.dart';
 import 'package:invests_helper/parts/diet/diet_main_page/diet_main_page.dart';
+import 'package:invests_helper/parts/diet/product_details/product_details.dart';
 import 'package:invests_helper/parts/diet/weight_journal/create_weight_entry_page/create_weight_entry_page.dart';
 import 'package:invests_helper/parts/diet/weight_journal/weight_journal_bloc.dart';
 import 'package:invests_helper/parts/diet/weight_journal/weight_journal_page.dart';
@@ -201,6 +202,13 @@ class TabNavigator {
         products: products,
         dietJournalBloc: dietJournalBloc,
     );
+    return page;
+  }
+
+  static Widget getDietProductDetailsPage({
+    required DietProductModel product,
+  }) {
+    final page = DietProductDetailsPage(productModel: product,);
     return page;
   }
 }

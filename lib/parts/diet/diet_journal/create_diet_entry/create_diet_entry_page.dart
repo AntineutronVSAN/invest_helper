@@ -6,6 +6,7 @@ import 'package:invests_helper/parts/diet/widgets/diet_product_card.dart';
 import 'package:invests_helper/theme/ui_colors.dart';
 import 'package:invests_helper/ui_package/app_bar/app_bar.dart';
 import 'package:invests_helper/ui_package/app_form/app_form_page.dart';
+import 'package:invests_helper/ui_package/not_found/not_found.dart';
 import 'package:invests_helper/utils/time_service.dart';
 
 class CreateDietEntryPage extends StatefulWidget {
@@ -29,6 +30,9 @@ class _CreateDietEntryPageState extends State<CreateDietEntryPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.products.isEmpty || widget.users.isEmpty) {
+      return const IHNotFound(isPage: true, isBack: true, title: 'Добавить запись');
+    }
     return SafeArea(
       child: GestureDetector(
         onTap: () {
@@ -36,7 +40,7 @@ class _CreateDietEntryPageState extends State<CreateDietEntryPage> {
         },
         child: Scaffold(
           appBar: iHAppBar(
-              title: 'Дневник питания',
+              title: 'Добавить запись',
               onBackTap: () {
                 Navigator.of(context).pop();
               }),

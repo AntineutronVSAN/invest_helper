@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:invests_helper/data/models/response/google_sheets/diet.dart';
 import 'package:invests_helper/theme/texts.dart';
+import 'package:invests_helper/theme/ui_colors.dart';
 import 'package:invests_helper/ui_package/clicable_card/clicable_card.dart';
 import 'package:invests_helper/utils/time_service.dart';
 
@@ -25,6 +26,7 @@ class DietListItem extends StatelessWidget {
       child: Column(
         children: [
           _getCardTitle(),
+          const Divider(color: AppColors.primaryTextColor,),
           _getCardBody(),
         ],
       ),
@@ -47,16 +49,28 @@ class DietListItem extends StatelessWidget {
   }
 
   Widget _getCardBody() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        AppTexts.primaryCardText(
-          text: user.name,
-        ),
-        AppTexts.primaryCardText(
-          text: product.name,
-        ),
-      ],
-    );
+    return LayoutBuilder(builder: (context, constrains) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            width: constrains.maxWidth / 2.0,
+            child: AppTexts.primaryCardText(
+              text: user.name,
+              maxLines: 3,
+              textAlign: TextAlign.start,
+            ),
+          ),
+          SizedBox(
+            width: constrains.maxWidth / 2.0,
+            child: AppTexts.primaryCardText(
+              text: product.name,
+              maxLines: 3,
+              textAlign: TextAlign.end,
+            ),
+          ),
+        ],
+      );
+    });
   }
 }

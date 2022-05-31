@@ -30,15 +30,20 @@ class AppTexts {
     Color color = AppColors.primaryInfoTextColor,
     EdgeInsets? padding,
     FontWeight? fontWeight,
+    int? maxLines,
+    TextAlign? textAlign,
   }) {
     return Padding(
       padding: padding ?? EdgeInsets.zero,
       child: Text(
         text,
+        textAlign: textAlign,
+        maxLines: maxLines,
         style: TextStyle(
           color: color,
           fontSize: fontSize,
           fontWeight: fontWeight,
+
         ),
       ),
     );

@@ -30,7 +30,17 @@ PreferredSizeWidget iHAppBar({
           ),
         Align(
           alignment: Alignment.center,
-          child: Text(title, style: AppTextStyles.getThirdTextStyle(),)
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: 250.0,
+            ),
+            child: Row(
+              children: [
+                Flexible(
+                    child: Text(title, style: AppTextStyles.getThirdTextStyle(), maxLines: 1,)),
+              ],
+            ),
+          )
         ),
       ],
     ),

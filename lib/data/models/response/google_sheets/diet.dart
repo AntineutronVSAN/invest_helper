@@ -37,7 +37,8 @@ class DietProductModel implements AppModelWithId {
   final double oneProductWeight;
   /// Описание, что значит эта единицы
   final String oneProductWeightDescription;
-
+  /// Из чего состоит продукт
+  final String composition;
   DietProductModel({
     required this.id,
     required this.name,
@@ -49,6 +50,7 @@ class DietProductModel implements AppModelWithId {
     required this.fats,
     required this.oneProductWeight,
     required this.oneProductWeightDescription,
+    required this.composition,
   });
 
   @override
